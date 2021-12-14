@@ -16,9 +16,9 @@
 % uncoment this part of the script.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    ModelName='Longitudinaldynamicmodel_SmartFortwo';                       % Define the name of the Model to be simulated
+    ModelName='Laengsdynamikmodell/Longitudinaldynamicmodel_SmartFortwo';                       % Define the name of the Model to be simulated
     ExpN=14;                                                                % Number of total Experiment
-    load('SmartFortwo_Experiments');                                        % load saved experiments
+    load('Experiment_Data/SmartFortwo_Experiments');                                        % load saved experiments
     open(ModelName)                                                         % open model
     Longitudinaldynamicmodel_SmartFortwo_Parameterfile;                     % load corresponing parameterfile of model
     

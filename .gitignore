@@ -2,3 +2,6 @@
 *.autosave
 *.asv
 *.original
+*.r2020b
+*.slxc
+slprj/*
