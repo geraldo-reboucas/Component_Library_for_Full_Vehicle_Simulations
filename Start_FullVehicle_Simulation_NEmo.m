@@ -7,7 +7,7 @@
 % ------------------------------------------------------------------------
 % open('Longitudinaldynamicmodel_SmartFortwo');                                      %Open Longitudinal dynamic model NEmo
 % Longitudinaldynamicmodel_SmartFortwo_Parameterfile;                                %Load Parameters of NEmo in Model
-% simn=sim('Longitudinaldynamicmodel_SmartFortwo','StopTime','1220');                %Simulate Model
+% simn = sim('Longitudinaldynamicmodel_SmartFortwo','StopTime','1220');                %Simulate Model
 % Simulink.sdi.view;                                                          %Show results in Simulink Data Inspector
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -15,25 +15,37 @@
 % experimental data. To run the driving cycles of the measured experiments,   
 % uncoment this part of the script.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear;
+close all;
+clc;
 
-    ModelName='Laengsdynamikmodell/Longitudinaldynamicmodel_SmartFortwo';                       % Define the name of the Model to be simulated
-    ExpN=14;                                                                % Number of total Experiment
-    load('Experiment_Data/SmartFortwo_Experiments');                                        % load saved experiments
-    open(ModelName)                                                         % open model
-    Longitudinaldynamicmodel_SmartFortwo_Parameterfile;                     % load corresponing parameterfile of model
-    
-    %Choose Driving Cycle
-    set_param('Longitudinaldynamicmodel_SmartFortwo/Driving Cycle/Longitudinal Driving Cycles','dcname','Custom_Driving_Cycle');
-    %Number of Cycles
-    set_param('Longitudinaldynamicmodel_SmartFortwo/Driving Cycle/Longitudinal Driving Cycles','dccircuits','1');
-    %Speed Vector [Nx2]
-    set_param('Longitudinaldynamicmodel_SmartFortwo/Driving Cycle/Longitudinal Driving Cycles','dc_speed','cycle');
-    %Gear Vector [Nx2]
-    set_param('Longitudinaldynamicmodel_SmartFortwo/Driving Cycle/Longitudinal Driving Cycles','dc_gear','[]');
+addpath(genpath('Experiment_Data'));
+addpath(genpath('Laengsdynamikmodell'));
+addpath(genpath('LIB'));
 
-    for Expn=1:ExpN 
-        [simulation(Expn),cycle]=SimSmartFortwoExperiment(ModelName,experiment, Expn); %Run experiment with measured driving cycle
-    end
+ModelName = 'Laengsdynamikmodell/Longitudinaldynamicmodel_SmartFortwo'; % Define the name of the Model to be simulated
+ExpN = 14;                                                              % Number of total Experiment
+load('Experiment_Data/SmartFortwo_Experiments');                        % load saved experiments
+open(ModelName)                                                         % open model
+Longitudinaldynamicmodel_SmartFortwo_Parameterfile;                     % load corresponing parameterfile of model
 
-    [folder, ~, ~]=fileparts(mfilename('fullpath'));                         %get path of this script
-    save([folder,'\SmartFortwo_Simulations'],'simulation');                         % Save in the folder of this script
+% Choose Driving Cycle
+obj = 'Longitudinaldynamicmodel_SmartFortwo/Driving Cycle/Longitudinal Driving Cycles';
+set_param(obj, 'dcname','Custom_Driving_Cycle');
+% Number of Cycles
+set_param(obj, 'dccircuits','1');
+% Speed Vector [Nx2]
+set_param(obj, 'dc_speed','cycle');
+% Gear Vector [Nx2]
+set_param(obj, 'dc_gear','[]');
+
+
+for Expn = 1:ExpN
+    % Run experiment with measured driving cycle
+    [simulation(Expn), cycle] = SimSmartFortwoExperiment(ModelName, experiment, Expn); 
+end
+
+% get path of this script
+[folder, ~, ~] = fileparts(mfilename('fullpath'));
+% Save in the folder of this script
+save([folder, '\SmartFortwo_Simulations'], 'simulation');
